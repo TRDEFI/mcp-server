@@ -1,7 +1,7 @@
 # TRDEFI Liquidity — MCP server
 
 [![Listed on mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/trdefi/mcp-server)
-[![M8ven Trust Index](https://m8ven.ai/badge/mcp/trdefi/mcp-server)](https://m8ven.ai/mcp/trdefi/mcp-server)
+[![M8ven Score](https://m8ven.ai/badge/mcp/trdefi-mcp-server-wq7ly5?v=ae8d4ca3fb29c4fa076ae4d31b3bd3ee)](https://m8ven.ai/mcp/trdefi-mcp-server-wq7ly5)
 
 A **remote, read-only** [Model Context Protocol](https://modelcontextprotocol.io) server for the live
 TRDEFI non-custodial stablecoin liquidity catalogue.
