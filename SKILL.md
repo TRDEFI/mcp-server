@@ -1,6 +1,6 @@
 ---
 name: trdefi-liquidity
-description: Live non-custodial stablecoin liquidity for AI agents. Use when an agent needs to find real USDC/USDT maker positions to trade against, quote a stablecoin swap on-chain at the current block, or earn swap fees on idle stablecoins without moving custody. Covers listing positions, quoting a swap, and reading settled volume across Ethereum, Base, Arbitrum, Optimism, Polygon and BNB Smart Chain. Read-only tools are free and need no key.
+description: Live non-custodial stablecoin liquidity for AI agents. Use when an agent needs to find real USDC/USDT maker positions to trade against, quote a stablecoin swap on-chain at the current block, or earn swap fees on idle stablecoins without moving custody. Covers listing positions, quoting a swap, and reading settled volume across 20 networks (Ethereum, Base, Arbitrum, Optimism, Polygon, BNB Chain and 14 more). Read-only tools are free and need no key.
 license: MIT
 ---
 
@@ -45,6 +45,10 @@ Those positions answer with a clear reason instead of a price. **That is a prope
 strategy, not an error** — treat it as a signal to try a different position rather than a failure to
 retry.
 
+Each position carries a `quote_eligible` flag (USDC/USDT and router-attached). `GET
+/api/strategies?quote_ready=true` returns only the positions the router can price, so a quote attempt
+starts from a candidate that can actually answer.
+
 ## Prepare endpoints
 
 Outside the MCP surface, two HTTPS endpoints prepare unsigned transactions:
@@ -57,7 +61,12 @@ Both answer **HTTP 402** with their payment terms when unpaid, and settle USDC o
 accepted as an alternative. **The transactions are unsigned**: the caller signs and broadcasts with its
 own wallet, and TRDEFI cannot sign on the caller's behalf.
 
+The service is x402-native — discovery is free, execution is metered — and is listed in the **x402
+Bazaar** (the CDP catalogue), so agents that discover services through the Bazaar find it with no
+registration.
+
 ## What TRDEFI does not do
 
 It never takes custody, never holds funds, and never signs. A position is backed by a bounded,
-revocable ERC-2612 allowance rather than a deposit, so exit is one transaction: dock and revoke.
+revocable on-chain allowance (a plain ERC-20 `approve` — no deposit, no permit required), so exit is
+one transaction: dock and revoke.
