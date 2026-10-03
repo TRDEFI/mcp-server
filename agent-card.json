@@ -1,0 +1,55 @@
+{
+  "protocolVersion": "1.0",
+  "name": "TRDEFI Liquidity",
+  "description": "Read-only agent for a live, non-custodial liquidity catalogue. Ask it for aggregate liquidity statistics, the open maker positions across 20 networks, the live networks, or an on-chain swap quote against a position. No key, and nothing it can do moves a token.",
+  "version": "1.0.0",
+  "documentationUrl": "https://yield.trdefi.com/docs/api",
+  "iconUrl": "https://raw.githubusercontent.com/TRDEFI/mcp-server/main/assets/trdefi-logo-400.png",
+  "provider": {
+    "organization": "TRDEFI",
+    "url": "https://yield.trdefi.com"
+  },
+  "supportedInterfaces": [
+    {
+      "url": "https://yield.trdefi.com/a2a/v1",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "extendedAgentCard": false
+  },
+  "defaultInputModes": ["text/plain"],
+  "defaultOutputModes": ["text/markdown", "text/plain"],
+  "skills": [
+    {
+      "id": "catalogue-stats",
+      "name": "Catalogue statistics",
+      "description": "Aggregate counts and realised settled volume for the open non-custodial liquidity catalogue, over 1, 7 and 30 days.",
+      "tags": ["liquidity", "stats", "stablecoin", "defi"],
+      "examples": ["how much liquidity is open", "stats"],
+      "inputModes": ["text/plain"],
+      "outputModes": ["text/plain"]
+    },
+    {
+      "id": "open-positions",
+      "name": "Open positions",
+      "description": "The open maker positions, each with its network, pair and 32-byte strategy hash. Stablecoin pairs (USDC/USDT) are the core; the catalogue also carries other pairs.",
+      "tags": ["positions", "usdc", "usdt", "market-making"],
+      "examples": ["show open positions", "what liquidity is on base"],
+      "inputModes": ["text/plain"],
+      "outputModes": ["text/plain"]
+    },
+    {
+      "id": "swap-quote",
+      "name": "On-chain swap quote",
+      "description": "Quote a USDC/USDT swap against one position at the current block. Send `quote <strategyHash> <amountBaseUnits> [chain]`. A maker may gate a position; those answer with a reason instead of a price.",
+      "tags": ["quote", "swap", "onchain", "x402"],
+      "examples": ["quote 0x20691ea20452e7b0b7311428ae9be4cf8ffefc890aa09a2c3bcc298198606d72 1000000 ethereum"],
+      "inputModes": ["text/plain"],
+      "outputModes": ["text/plain"]
+    }
+  ]
+}
