@@ -1,7 +1,7 @@
 # TRDEFI Liquidity — MCP server
 
 [![Listed on mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/trdefi/mcp-server)
-[![M8ven Score](https://m8ven.ai/badge/mcp/trdefi-mcp-server-wq7ly5?v=ae8d4ca3fb29c4fa076ae4d31b3bd3ee)](https://m8ven.ai/mcp/trdefi-mcp-server-wq7ly5)
+[![M8ven Score](https://m8ven.ai/badge/mcp/trdefi-mcp-server-wq7ly5)](https://m8ven.ai/mcp/trdefi-mcp-server-wq7ly5?s=readme)
 [![Glama score](https://glama.ai/mcp/connectors/io.github.TRDEFI/liquidity/badges/score.svg)](https://glama.ai/mcp/connectors/io.github.TRDEFI/liquidity)
 [![Smithery](https://img.shields.io/badge/Smithery-listed-blue)](https://smithery.ai/server/@trdefi/liquidity)
 [![Install TRDEFI MCP](https://replit.com/badge?caption=Install%20TRDEFI%20MCP)](https://replit.com/integrations?mcp=eyJkaXNwbGF5TmFtZSI6IlRSREVGSSBMaXF1aWRpdHkiLCJiYXNlVXJsIjoiaHR0cHM6Ly95aWVsZC50cmRlZmkuY29tL21jcCJ9)
