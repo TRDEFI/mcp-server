@@ -1,8 +1,8 @@
 {
-  "protocolVersion": "1.0",
   "name": "TRDEFI Liquidity",
   "description": "Read-only agent for a live, non-custodial liquidity catalogue. Ask it for aggregate liquidity statistics, the open maker positions across 20 networks, the live networks, or an on-chain swap quote against a position. No key, and nothing it can do moves a token.",
   "version": "1.0.0",
+  "url": "https://yield.trdefi.com/a2a/v1",
   "documentationUrl": "https://yield.trdefi.com/docs/api",
   "iconUrl": "https://raw.githubusercontent.com/TRDEFI/mcp-server/main/assets/trdefi-logo-400.png",
   "provider": {
@@ -13,7 +13,7 @@
     {
       "url": "https://yield.trdefi.com/a2a/v1",
       "protocolBinding": "JSONRPC",
-      "protocolVersion": "1.0"
+      "transport": "JSONRPC"
     }
   ],
   "capabilities": {
