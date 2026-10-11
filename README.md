@@ -72,6 +72,9 @@ key. Funds stay in the owner's wallet behind a bounded, revocable allowance.
 * mcpservers.org — https://mcpservers.org/servers/trdefi/mcp-server
 * M8ven — https://m8ven.ai/mcp/trdefi-mcp-server-wq7ly5
 * Coinbase x402 Bazaar — discoverable as a paid x402 service (the two prepare endpoints answer `402`)
+* PayAPI Market — https://payapi.market/api/trdefi-liquidity
+  (listing live; `POST /v1/positions` carries a settled, verified payment — 0.02 USDC on Base, block 52475755)
+  Agents can search it at https://payapi.market/mcp
 
 ## Registry
 
