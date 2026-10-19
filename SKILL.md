@@ -1,6 +1,6 @@
 ---
 name: trdefi-liquidity
-description: Live non-custodial stablecoin liquidity for AI agents. Use when an agent needs to find real USDC/USDT maker positions to trade against, quote a stablecoin swap on-chain at the current block, or earn swap fees on idle stablecoins without moving custody. Covers listing positions, quoting a swap, and reading settled volume across 20 networks (Ethereum, Base, Arbitrum, Optimism, Polygon, BNB Chain and 14 more). Read-only tools are free and need no key.
+description: Live non-custodial stablecoin liquidity for AI agents. Use when an agent needs to find real maker positions to trade against, quote a swap on-chain at the current block, or earn swap fees on idle stablecoins without moving custody. Covers listing positions, quoting a swap, and reading settled volume across 20 networks (Ethereum, Base, Arbitrum, Optimism, Polygon, BNB Chain and 14 more). Read-only tools are free and need no key.
 license: MIT
 ---
 
@@ -14,14 +14,16 @@ Live, non-custodial stablecoin liquidity, exposed as a remote MCP server at
 Use it when an agent needs to:
 
 - Find a **real on-chain counterparty** for a stablecoin swap, instead of a custodial venue.
-- **Quote** a USDC/USDT swap against a maker position at the current block, before committing to anything.
-- See where **stablecoin liquidity** actually sits across chains, with settled volume.
+- **Quote** a swap against a maker position at the current block, before committing to anything.
+- See where liquidity actually sits across chains, with settled volume.
 - Understand how a treasury can **earn swap fees on idle stablecoins without depositing them anywhere**:
   the funds stay in the holder's own wallet, backed by a bounded, revocable allowance.
 
 ## When not to use this
 
-- It is not a price oracle for arbitrary tokens. Positions are stablecoin pairs.
+- It is not a price oracle for arbitrary tokens. Positions are liquidity-provider positions on the
+  1inch Aqua shared-liquidity engine, and the book is mostly 1INCH against a quote asset. See
+  *What the catalogue holds* below.
 - It does not sign or broadcast anything. Nothing here can move a wallet's funds.
 - It is not a yield aggregator. It reports positions that exist; it does not rank or recommend them.
 
@@ -38,35 +40,53 @@ Use it when an agent needs to:
 
 All six are **read-only** and require **no API key**.
 
+## What the catalogue holds
+
+The largest book is **1INCH against a quote asset**. By position count the top pairs are
+1INCH/WETH, 1INCH/USDC, 1INCH/WBTC, 1INCH/UNI and 1INCH/USDT, and USDC/USDT is the largest
+stablecoin-to-stablecoin pair. Roughly half of all positions are 1INCH-led, and stablecoin-to-
+stablecoin pairs are a small slice of the catalogue - a position with one stablecoin leg is the
+common case.
+
+This matters when choosing a pair: filter for the token you intend to trade, then treat the result
+as a candidate list, not a guarantee.
+
+For the live counts, read `trdefi_stats`. They refresh on a timer, so nothing in this document
+hardcodes them.
+
 ## Working with quotes
 
-A maker may gate a position on the caller holding an access licence token, and roughly four in five do.
-Those positions answer with a clear reason instead of a price. **That is a property of the maker's
-strategy, not an error** — treat it as a signal to try a different position rather than a failure to
-retry.
+A maker may gate a position on the caller holding an access licence token, and most of them do.
+Measured over 500 catalogue positions, about **92 percent** answered "Strategy is gated" and about
+5 percent returned a price. Those positions answer with a clear reason instead of a number. **That
+is a property of the maker's strategy, not an error** - treat it as a signal to try a different
+position rather than a failure to retry.
 
-Each position carries a `quote_eligible` flag (USDC/USDT and router-attached). `GET
-/api/strategies?quote_ready=true` returns only the positions the router can price, so a quote attempt
-starts from a candidate that can actually answer.
+Each position carries a `quote_eligible` flag. It means the position is router-attached and its
+network has a quote route. **It does not mean the quote will succeed.** `GET
+/api/strategies?quote_ready=true` narrows the catalogue to positions in that routable set, but it is
+not a guarantee of a price: of 50 positions sampled from the filtered set, 49 still answered
+"Strategy is gated" and none returned a price. Expect to walk the list and treat a priced quote as
+the exception, not the rule.
 
 ## Prepare endpoints
 
 Outside the MCP surface, two HTTPS endpoints prepare unsigned transactions:
 
-- `POST /v1/positions` — the transactions that create a maker position.
-- `POST /v1/swaps` — the transaction that executes a swap.
+- `POST /v1/positions` - the transactions that create a maker position.
+- `POST /v1/swaps` - the transaction that executes a swap.
 
 Both answer **HTTP 402** with their payment terms when unpaid, and settle USDC on Base
 (`eip155:8453`) at **$0.02 per request**, so an agent needs no account and no API key. An API key is
 accepted as an alternative. **The transactions are unsigned**: the caller signs and broadcasts with its
 own wallet, and TRDEFI cannot sign on the caller's behalf.
 
-The service is x402-native — discovery is free, execution is metered — and is listed in the **x402
+The service is x402-native - discovery is free, execution is metered - and is listed in the **x402
 Bazaar** (the CDP catalogue), so agents that discover services through the Bazaar find it with no
 registration.
 
 ## What TRDEFI does not do
 
 It never takes custody, never holds funds, and never signs. A position is backed by a bounded,
-revocable on-chain allowance (a plain ERC-20 `approve` — no deposit, no permit required), so exit is
+revocable on-chain allowance (a plain ERC-20 `approve` - no deposit, no permit required), so exit is
 one transaction: dock and revoke.

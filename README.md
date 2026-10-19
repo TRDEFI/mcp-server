@@ -28,6 +28,21 @@ host as the public API it reads.
 | `trdefi_quote` | A swap simulated on-chain against one position, at the current block |
 | `trdefi_badge` | A shields.io payload, so a README can show live figures |
 
+## What the catalogue holds
+
+The largest book is **1INCH against a quote asset**. By position count the top pairs are 1INCH/WETH,
+1INCH/USDC, 1INCH/WBTC, 1INCH/UNI and 1INCH/USDT, and USDC/USDT is the largest
+stablecoin-to-stablecoin pair. Roughly half of all positions are 1INCH-led. A position with one
+stablecoin leg is the common case; two stablecoin legs are a small slice of the book.
+
+Filter for the token you intend to trade, then treat the result as a candidate list. A maker may
+gate a position on the caller holding an access licence token, and most of them do: measured over
+500 catalogue positions, about 92 percent answered "Strategy is gated" and about 5 percent returned
+a price. The `quote_ready` filter narrows to positions that are router-attached and on a network
+with a quote route, but it does not guarantee a price.
+
+For the live counts, read `trdefi_stats`. They refresh on a timer, so nothing here hardcodes them.
+
 ## What an agent can do with it
 
 * Understand the liquidity landscape before proposing anything: which networks, which pairs, how deep
