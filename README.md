@@ -28,18 +28,28 @@ host as the public API it reads.
 | `trdefi_quote` | A swap simulated on-chain against one position, at the current block |
 | `trdefi_badge` | A shields.io payload, so a README can show live figures |
 
-## What the catalogue holds
+## How a position is bound, and how the swap completes
 
-The largest book is **1INCH against a quote asset**. By position count the top pairs are 1INCH/WETH,
-1INCH/USDC, 1INCH/WBTC, 1INCH/UNI and 1INCH/USDT, and USDC/USDT is the largest
-stablecoin-to-stablecoin pair. Roughly half of all positions are 1INCH-led. A position with one
-stablecoin leg is the common case; two stablecoin legs are a small slice of the book.
+A position is not a deposit and not a pool you join. The maker signs a **bounded, revocable
+allowance**: one token, one amount, one deadline. Nothing is deposited, nothing is locked, the
+capital never leaves the maker's wallet, and the exit is a single transaction.
 
-Filter for the token you intend to trade, then treat the result as a candidate list. A maker may
-gate a position on the caller holding an access licence token, and most of them do: measured over
-500 catalogue positions, about 92 percent answered "Strategy is gated" and about 5 percent returned
-a price. The `quote_ready` filter narrows to positions that are router-attached and on a network
-with a quote route, but it does not guarantee a price.
+An agent does not manage a position and does not need to work out what the maker's two tokens are.
+It asks for a position to trade against, gets a price for the swap it wants, and the engine settles
+the swap on its own once the swap is signed.
+
+A maker may gate a position on the caller holding an access licence token, and on most networks
+most of them do: measured 2026-10-19 across 17 networks, 62 percent answered "Strategy is gated"
+and 17 percent returned a price. On Ethereum, 58 of 60 sampled positions are gated. The credential
+contract is only deployed on the 13 Aqua chains, so Arc, Monad, Cronos and HyperEVM carry no such
+gate. `quote_ready` narrows to positions on a network with a quote route, but it does not guarantee
+a price.
+
+Pass `from` to `trdefi_quote` with the address that will sign the swap. The gate is checked on
+`tx.origin`: without a caller the API answers as `address(0)` and returns the least specific
+revert available, `0x89c62b64`. With one it returns `0x39c4052c`, which names the actual problem.
+A caller holding the maker's credential gets a real price; anyone else gets an accurate "you do
+not hold it".
 
 For the live counts, read `trdefi_stats`. They refresh on a timer, so nothing here hardcodes them.
 

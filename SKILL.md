@@ -22,8 +22,8 @@ Use it when an agent needs to:
 ## When not to use this
 
 - It is not a price oracle for arbitrary tokens. Positions are liquidity-provider positions on the
-  1inch Aqua shared-liquidity engine, and the book is mostly 1INCH against a quote asset. See
-  *What the catalogue holds* below.
+  1inch Aqua shared-liquidity engine, and what an agent trades against is the pair the maker chose,
+  not a pair the agent picked. See *How a position is bound* below.
 - It does not sign or broadcast anything. Nothing here can move a wallet's funds.
 - It is not a yield aggregator. It reports positions that exist; it does not rank or recommend them.
 
@@ -40,34 +40,48 @@ Use it when an agent needs to:
 
 All six are **read-only** and require **no API key**.
 
-## What the catalogue holds
+## How a position is bound, and how the swap completes
 
-The largest book is **1INCH against a quote asset**. By position count the top pairs are
-1INCH/WETH, 1INCH/USDC, 1INCH/WBTC, 1INCH/UNI and 1INCH/USDT, and USDC/USDT is the largest
-stablecoin-to-stablecoin pair. Roughly half of all positions are 1INCH-led, and stablecoin-to-
-stablecoin pairs are a small slice of the catalogue - a position with one stablecoin leg is the
-common case.
+A position is not a deposit and not a pool you join. The maker signs a **bounded, revocable
+allowance**: one token, one amount, one deadline. Nothing is deposited, nothing is locked, the
+capital never leaves the maker's wallet, and the exit is a single transaction.
 
-This matters when choosing a pair: filter for the token you intend to trade, then treat the result
-as a candidate list, not a guarantee.
+That is the whole mechanism, and it is what the six tools expose. An agent does not manage a
+position and does not need to understand what the maker's two tokens are. It asks for a position
+to trade against, gets a price for the swap it wants, and the engine settles the swap on its
+own once the swap is signed.
 
 For the live counts, read `trdefi_stats`. They refresh on a timer, so nothing in this document
 hardcodes them.
 
 ## Working with quotes
 
-A maker may gate a position on the caller holding an access licence token, and most of them do.
-Measured over 500 catalogue positions, about **92 percent** answered "Strategy is gated" and about
-5 percent returned a price. Those positions answer with a clear reason instead of a number. **That
-is a property of the maker's strategy, not an error** - treat it as a signal to try a different
-position rather than a failure to retry.
+A maker may gate a position on the caller holding an access licence token, and on most networks
+most of them do. Measured 2026-10-19 by sampling 12 positions on each of 17 networks, 146 quotes in
+total: **62 percent** answered "Strategy is gated" and **17 percent** returned a price. Those
+positions answer with a clear reason instead of a number. **That is a property of the maker's
+strategy, not an error** - treat it as a signal to try a different position rather than a failure
+to retry.
+
+The split is strongly per-network. On Ethereum 58 of 60 sampled positions are gated and none
+returned a price. The credential contract itself is only deployed on the 13 Aqua chains, so **Arc,
+MMonad, Cronos and HyperEVM carry no such gate** and quote cleanly.
 
 Each position carries a `quote_eligible` flag. It means the position is router-attached and its
-network has a quote route. **It does not mean the quote will succeed.** `GET
-/api/strategies?quote_ready=true` narrows the catalogue to positions in that routable set, but it is
-not a guarantee of a price: of 50 positions sampled from the filtered set, 49 still answered
-"Strategy is gated" and none returned a price. Expect to walk the list and treat a priced quote as
-the exception, not the rule.
+network has a quote route. **It does not mean the quote will succeed**, and `quote_ready=true`
+narrows to that routable set without removing the gate: of 50 positions sampled from the filtered
+set, 49 still answered "Strategy is gated" and none returned a price.
+
+### Pass `from` and you get the real answer
+
+The gate is checked on `tx.origin`, so the simulation has to know who the caller is. Without
+`from` the API answers as `address(0)` and returns the least specific revert available,
+`0x89c62b64` - "the caller holds none". With `from` it returns `0x39c4052c`, the tx-origin
+balance check, which names the actual problem.
+
+So pass the address that will sign the swap. A caller that holds the maker's credential gets a
+real price. Anyone else gets an accurate "you do not hold it" instead of the generic refusal,
+which is the difference between a failed quote and a wrong request.
 
 ## Prepare endpoints
 
