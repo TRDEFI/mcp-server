@@ -100,6 +100,9 @@ key. Funds stay in the owner's wallet behind a bounded, revocable allowance.
 * PayAPI Market — https://payapi.market/api/trdefi-liquidity
   (listing live; `POST /v1/positions` carries a settled, verified payment — 0.02 USDC on Base, block 52475755)
   Agents can search it at https://payapi.market/mcp
+* Payforapi — https://payforapi.com/catalog/trdefi-liquidity-positions
+  (both prepare endpoints listed; 402 verified live, 0.02 USDC on Base and Arc; cards in English and Russian)
+  Machine-readable catalogue at https://payforapi.com/llms-full.txt
 
 ## Registry
 
