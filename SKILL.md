@@ -36,9 +36,14 @@ Use it when an agent needs to:
 | `trdefi_positions` | List open maker positions. Filter by network and pair. Each row carries the strategy hash, network, pair, tokens and settled volume. |
 | `trdefi_position_detail` | One position in full, by its 32-byte strategy hash. |
 | `trdefi_quote` | Price a swap against one position, on-chain, at the current block. |
+| `trdefi_fusion_quote` | A 1inch Fusion quote for a pair. Use it when a position answers "Strategy is gated" - the caller needs no access token, a resolver fills the order. |
+| `trdefi_fusion_prepare` | Quote and build the EIP-712 Fusion order to sign. Returns typedData, order, extension, quoteId, orderHash. Nothing is signed or submitted. |
+| `trdefi_fusion_submit` | Forward an already-signed Fusion order to 1inch's relayer. The server never signs and never holds a key. |
 | `trdefi_badge` | A shields.io payload for the catalogue metrics, for a README. |
 
-All six are **read-only** and require **no API key**.
+All nine require **no API key**. Eight are pure reads. The ninth,
+`trdefi_fusion_submit`, only forwards a signature the caller has already produced - it cannot
+sign, cannot hold a key, and cannot move a token on its own.
 
 ## How a position is bound, and how the swap completes
 
@@ -46,7 +51,7 @@ A position is not a deposit and not a pool you join. The maker signs a **bounded
 allowance**: one token, one amount, one deadline. Nothing is deposited, nothing is locked, the
 capital never leaves the maker's wallet, and the exit is a single transaction.
 
-That is the whole mechanism, and it is what the six tools expose. An agent does not manage a
+That is the whole mechanism, and it is what these tools expose. An agent does not manage a
 position and does not need to understand what the maker's two tokens are. It asks for a position
 to trade against, gets a price for the swap it wants, and the engine settles the swap on its
 own once the swap is signed.
