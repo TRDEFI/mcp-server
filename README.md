@@ -11,8 +11,8 @@ TRDEFI non-custodial stablecoin liquidity catalogue.
 
 **Endpoint:** `https://yield.trdefi.com/mcp` · **Transport:** Streamable HTTP · **Credential:** none
 
-Add it to any MCP-capable client and the nine tools below appear. There is nothing to install and no
-key to request. Eight are reads. The ninth, `trdefi_fusion_submit`, only forwards a signature the
+Add it to any MCP-capable client and the ten tools below appear. There is nothing to install and no
+key to request. Nine are reads. The tenth, `trdefi_fusion_submit`, only forwards a signature the
 caller already made - it never signs, never holds a key, and cannot move a token on its own.
 
 This repository holds only the registry manifest (`server.json`). The server itself runs on the same
@@ -26,6 +26,7 @@ host as the public API it reads.
 | `trdefi_chains` | Which networks are live, their engine addresses, and the tokens a position can be built from |
 | `trdefi_positions` | The open positions — filter by network and by pair |
 | `trdefi_position_detail` | One position, by its strategy hash |
+| `trdefi_position_inventory` | Whether a position can actually be filled - strategy balance, maker wallet balance, allowance, read from the chain |
 | `trdefi_quote` | A swap simulated on-chain against one position, at the current block |
 | `trdefi_fusion_quote` | A 1inch Fusion quote for a pair - the path for positions that answer "Strategy is gated" |
 | `trdefi_fusion_prepare` | The EIP-712 Fusion order to sign, with its typed data, extension and quote id |

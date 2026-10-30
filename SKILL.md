@@ -35,13 +35,14 @@ Use it when an agent needs to:
 | `trdefi_chains` | Which networks are live, their settlement engine address, and the tokens a position can be built from. Use this instead of hardcoding chain or token identifiers. |
 | `trdefi_positions` | List open maker positions. Filter by network and pair. Each row carries the strategy hash, network, pair, tokens and settled volume. |
 | `trdefi_position_detail` | One position in full, by its 32-byte strategy hash. |
+| `trdefi_position_inventory` | Whether a position can actually be filled: strategy balance, maker wallet balance and remaining allowance, read from the chain. `fillable=false` means the quote is real but the fill is not. |
 | `trdefi_quote` | Price a swap against one position, on-chain, at the current block. |
 | `trdefi_fusion_quote` | A 1inch Fusion quote for a pair. Use it when a position answers "Strategy is gated" - the caller needs no access token, a resolver fills the order. |
 | `trdefi_fusion_prepare` | Quote and build the EIP-712 Fusion order to sign. Returns typedData, order, extension, quoteId, orderHash. Nothing is signed or submitted. |
 | `trdefi_fusion_submit` | Forward an already-signed Fusion order to 1inch's relayer. The server never signs and never holds a key. |
 | `trdefi_badge` | A shields.io payload for the catalogue metrics, for a README. |
 
-All nine require **no API key**. Eight are pure reads. The ninth,
+All ten require **no API key**. Nine are pure reads. The tenth,
 `trdefi_fusion_submit`, only forwards a signature the caller has already produced - it cannot
 sign, cannot hold a key, and cannot move a token on its own.
 
