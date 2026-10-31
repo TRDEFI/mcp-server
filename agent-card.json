@@ -19,37 +19,122 @@
   "capabilities": {
     "streaming": false,
     "pushNotifications": false,
-    "extendedAgentCard": false
+    "extendedAgentCard": false,
+    "extensions": [
+      {
+        "uri": "https://a2a-registry.org/extensions/registry/v1",
+        "description": "Registry metadata and payment capabilities",
+        "required": false,
+        "params": {
+          "payment": {
+            "model": "freemium",
+            "protocols": [
+              "x402"
+            ],
+            "direction": "inbound",
+            "rails": [
+              {
+                "network": "base",
+                "token": "USDC",
+                "type": "stablecoin",
+                "protocol": "x402",
+                "caip2": "eip155:8453",
+                "contractAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+                "feeModel": "low",
+                "settlementTime": "fast"
+              },
+              {
+                "network": "arc",
+                "token": "USDC",
+                "type": "stablecoin",
+                "protocol": "x402",
+                "caip2": "eip155:5042",
+                "contractAddress": "0x3600000000000000000000000000000000000000",
+                "feeModel": "low",
+                "settlementTime": "instant"
+              }
+            ],
+            "meta": {
+              "reads": "free and keyless - catalogue, quotes and badges cost nothing",
+              "paid_routes": "POST /v1/positions and POST /v1/swaps, 0.02 USDC per request, or an API key",
+              "settlement": "onchain",
+              "refund_policy": "an invalid request is not charged",
+              "custody": "none - prepare-only, the caller signs"
+            }
+          }
+        }
+      }
+    ]
   },
-  "defaultInputModes": ["text/plain"],
-  "defaultOutputModes": ["text/markdown", "text/plain"],
+  "defaultInputModes": [
+    "text/plain"
+  ],
+  "defaultOutputModes": [
+    "text/markdown",
+    "text/plain"
+  ],
   "skills": [
     {
       "id": "catalogue-stats",
       "name": "Catalogue statistics",
       "description": "Aggregate counts and realised settled volume for the open non-custodial liquidity catalogue, over 1, 7 and 30 days.",
-      "tags": ["liquidity", "stats", "stablecoin", "defi"],
-      "examples": ["how much liquidity is open", "stats"],
-      "inputModes": ["text/plain"],
-      "outputModes": ["text/plain"]
+      "tags": [
+        "liquidity",
+        "stats",
+        "stablecoin",
+        "defi"
+      ],
+      "examples": [
+        "how much liquidity is open",
+        "stats"
+      ],
+      "inputModes": [
+        "text/plain"
+      ],
+      "outputModes": [
+        "text/plain"
+      ]
     },
     {
       "id": "open-positions",
       "name": "Open positions",
       "description": "The open maker positions, each with its network, pair and 32-byte strategy hash. Stablecoin pairs (USDC/USDT) are the core; the catalogue also carries other pairs.",
-      "tags": ["positions", "usdc", "usdt", "market-making"],
-      "examples": ["show open positions", "what liquidity is on base"],
-      "inputModes": ["text/plain"],
-      "outputModes": ["text/plain"]
+      "tags": [
+        "positions",
+        "usdc",
+        "usdt",
+        "market-making"
+      ],
+      "examples": [
+        "show open positions",
+        "what liquidity is on base"
+      ],
+      "inputModes": [
+        "text/plain"
+      ],
+      "outputModes": [
+        "text/plain"
+      ]
     },
     {
       "id": "swap-quote",
       "name": "On-chain swap quote",
       "description": "Quote a USDC/USDT swap against one position at the current block. Send `quote <strategyHash> <amountBaseUnits> [chain]`. A maker may gate a position; those answer with a reason instead of a price.",
-      "tags": ["quote", "swap", "onchain", "x402"],
-      "examples": ["quote 0x20691ea20452e7b0b7311428ae9be4cf8ffefc890aa09a2c3bcc298198606d72 1000000 ethereum"],
-      "inputModes": ["text/plain"],
-      "outputModes": ["text/plain"]
+      "tags": [
+        "quote",
+        "swap",
+        "onchain",
+        "x402"
+      ],
+      "examples": [
+        "quote 0x20691ea20452e7b0b7311428ae9be4cf8ffefc890aa09a2c3bcc298198606d72 1000000 ethereum"
+      ],
+      "inputModes": [
+        "text/plain"
+      ],
+      "outputModes": [
+        "text/plain"
+      ]
     }
   ]
 }
