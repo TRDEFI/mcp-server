@@ -1,0 +1,30 @@
+{
+  "name": "trdefi-liquidity",
+  "displayName": "TRDEFI Liquidity",
+  "version": "1.1.0",
+  "description": "Live non-custodial stablecoin liquidity for AI agents: open maker positions across 17 networks, the live networks, and an on-chain swap quote. Read-only, free, no key.",
+  "author": {
+    "name": "TRDEFI LTD",
+    "email": "info@trdefi.com",
+    "url": "https://app.trdefi.com"
+  },
+  "homepage": "https://yield.trdefi.com",
+  "repository": "https://github.com/TRDEFI/mcp-server",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "defi",
+    "liquidity",
+    "stablecoin",
+    "1inch",
+    "aqua",
+    "x402",
+    "a2a"
+  ],
+  "mcpServers": {
+    "trdefi": {
+      "type": "http",
+      "url": "https://yield.trdefi.com/mcp"
+    }
+  }
+}
