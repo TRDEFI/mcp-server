@@ -3,7 +3,19 @@
   "name": "io.github.TRDEFI/liquidity",
   "title": "TRDEFI Liquidity",
   "description": "Live non-custodial stablecoin liquidity: open positions, volume, and an on-chain swap quote.",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "websiteUrl": "https://yield.trdefi.com",
+  "repository": {
+    "url": "https://github.com/TRDEFI/mcp-server",
+    "source": "github"
+  },
+  "icons": [
+    {
+      "src": "https://yield.trdefi.com/logo.svg",
+      "mimeType": "image/svg+xml",
+      "sizes": ["512x512"]
+    }
+  ],
   "remotes": [
     {
       "type": "streamable-http",
