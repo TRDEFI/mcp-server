@@ -3,7 +3,6 @@
 [![Listed on mcpservers.org](https://mcpservers.org/badge.svg)](https://mcpservers.org/servers/trdefi/mcp-server)
 [![M8ven Score](https://m8ven.ai/badge/mcp/trdefi-mcp-server-wq7ly5)](https://m8ven.ai/mcp/trdefi-mcp-server-wq7ly5?s=readme)
 [![Glama score](https://glama.ai/mcp/connectors/io.github.TRDEFI/liquidity/badges/score.svg)](https://glama.ai/mcp/connectors/io.github.TRDEFI/liquidity)
-[![Smithery](https://img.shields.io/badge/Smithery-listed-blue)](https://smithery.ai/server/@trdefi/liquidity)
 [![Install TRDEFI MCP](https://replit.com/badge?caption=Install%20TRDEFI%20MCP)](https://replit.com/integrations?mcp=eyJkaXNwbGF5TmFtZSI6IlRSREVGSSBMaXF1aWRpdHkiLCJiYXNlVXJsIjoiaHR0cHM6Ly95aWVsZC50cmRlZmkuY29tL21jcCJ9)
 
 A **remote, read-only** [Model Context Protocol](https://modelcontextprotocol.io) server for the live
@@ -98,7 +97,6 @@ key. Funds stay in the owner's wallet behind a bounded, revocable allowance.
 
 * Official MCP Registry — `io.github.TRDEFI/liquidity`
 * Glama — https://glama.ai/mcp/connectors/io.github.TRDEFI/liquidity
-* Smithery — https://smithery.ai/server/@trdefi/liquidity
 * mcpservers.org — https://mcpservers.org/servers/trdefi/mcp-server
 * M8ven — https://m8ven.ai/mcp/trdefi-mcp-server-wq7ly5
 * Coinbase x402 Bazaar — discoverable as a paid x402 service (the two prepare endpoints answer `402`)
