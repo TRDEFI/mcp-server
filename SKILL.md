@@ -1,6 +1,6 @@
 ---
 name: trdefi-liquidity
-description: Live non-custodial stablecoin liquidity for AI agents. Use when an agent needs to find real maker positions to trade against, quote a swap on-chain at the current block, or earn swap fees on idle stablecoins without moving custody. Covers listing positions, quoting a swap, and reading settled volume across 20 networks (Ethereum, Base, Arbitrum, Optimism, Polygon, BNB Chain and 14 more). Read-only tools are free and need no key.
+description: Live non-custodial stablecoin liquidity for AI agents. Use when an agent needs to find real maker positions to trade against, quote a swap on-chain at the current block, or earn swap fees on idle stablecoins without moving custody. Covers listing positions, quoting a swap, and reading settled volume across 17 networks (Ethereum, Base, Arbitrum, Optimism, Polygon, BNB Chain and 11 more). Read-only tools are free and need no key.
 license: MIT
 ---
 
